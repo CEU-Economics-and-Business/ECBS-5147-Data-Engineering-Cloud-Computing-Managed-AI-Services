@@ -74,7 +74,8 @@
             "Effect": "Allow",
             "Action": [
                 "q:*",
-                "codewhisperer:*"
+                "codewhisperer:*",
+                "servicecatalog:*"
             ],
             "Resource": "*"
         },
@@ -299,6 +300,17 @@
                 "rekognition:*",
                 "comprehend:*",
                 "kendra:*"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "KMSForKendra",
+            "Effect": "Allow",
+            "Action": [
+                "kms:ListAliases",
+                "kms:DescribeKey",
+                "kms:CreateGrant",
+                "kms:ListKeys"
             ],
             "Resource": "*"
         },
