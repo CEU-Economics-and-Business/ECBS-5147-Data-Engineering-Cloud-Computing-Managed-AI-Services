@@ -319,7 +319,7 @@
                 "arn:aws:bedrock:*::foundation-model/amazon.nova-micro-v1:0",
                 "arn:aws:bedrock:*:870137400553:inference-profile/eu.amazon.nova-lite-v1:0",
                 "arn:aws:bedrock:*::foundation-model/amazon.nova-lite-v1:0",
-                "arn:aws:bedrock:*::foundation-model/mistral.mistral-7b-instruct-v0:2",
+                "arn:aws:bedrock:*::foundation-model/mistral.ministral-3-8b-instruct",
                 "arn:aws:bedrock:*::foundation-model/anthropic.claude-3-haiku-20240307-v1:0"
             ]
         },
