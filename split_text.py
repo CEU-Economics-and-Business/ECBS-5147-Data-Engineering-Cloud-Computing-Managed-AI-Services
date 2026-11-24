@@ -2,7 +2,7 @@ long_text = 3000 * "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
 COMPREHEND_LIMIT = 5000
 
 
-lines = long_text.split(".")
+lines = [line + "." for line in long_text.split(".") if line.strip()]
 current_text = ""
 
 for line in lines:
@@ -14,4 +14,4 @@ for line in lines:
 
 if current_text != "":
     # EXECUTE COMPREHEND
-    print(f"Executing Comprehend on {len(current_text)} characters)")
+    print(f"Executing Comprehend on {len(current_text)} characters")
