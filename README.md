@@ -4,6 +4,22 @@
   Data Engineering 1: Cloud Computing and Managed AI Services
 </div>
 
+# **Getting started**
+
+**Codespaces:** on GitHub, click _Code_ → _Codespaces_ → _Create codespace_. Everything is preinstalled.
+
+**Local:** install [uv](https://docs.astral.sh/uv/getting-started/installation/), then:
+
+```
+git clone https://github.com/CEU-Economics-and-Business/ECBS-5147-Data-Engineering-Cloud-Computing-Managed-AI-Services.git
+cd ECBS-5147-Data-Engineering-Cloud-Computing-Managed-AI-Services
+uv sync
+```
+
+Open the notebooks in VS Code and pick the `.venv` kernel (or run `uv run jupyter lab`).
+
+**AWS credentials (both):** run `aws configure` (locally, [install the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) first), paste your access key ID and secret access key, and set the default region to `eu-west-1`. Never put your keys in code or commit them to Git.
+
 # **Prerequisites**
 
 - Python programming
