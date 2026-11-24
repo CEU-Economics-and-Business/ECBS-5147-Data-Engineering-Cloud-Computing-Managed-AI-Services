@@ -136,7 +136,6 @@ AWS offers a wide variety of services to support different cloud computing needs
 ### Machine Learning
 - **SageMaker**: Managed notebook environment for building ML models.
 - **Comprehend**: Sentiment analysis service.
-- **DeepLens**: Hardware and software for computer vision.
 - **Lex**: Chatbot engine powering Alexa.
 - **Polly**: Text-to-speech with realistic voices.
 - **Rekognition**: Image processing and recognition.
@@ -153,9 +152,6 @@ AWS offers a wide variety of services to support different cloud computing needs
 
 ### Security, Identity, and Compliance
 - **IAM (Identity and Access Management)**: Manages user permissions and access.
-
-### AR/VR
-- **Sumerian**: Tools for building 3D, AR, and VR applications.
 
 ### Application Integration
 - **SNS (Simple Notification Service)**: Push notification and messaging service.
@@ -300,14 +296,13 @@ EC2 has fundamentally changed cloud computing by enabling businesses to access a
 - **Types**:
   - **Standard RIs**: Up to 75% savings compared to On-Demand.
   - **Convertible RIs**: Up to 54% savings, with flexibility to modify instance attributes to equal or greater value.
-  - **Scheduled RIs**: Reserved for specific time windows, allowing you to match capacity with predictable schedules (e.g., part of a day, week, or month).
 
 ### Spot Instances
-- **Pricing**: Bid your own price for instance capacity, allowing for cost-effective options for flexible workloads.
+- **Pricing**: Use spare EC2 capacity at a steep discount (up to 90%) at the current Spot price, which AWS adjusts gradually based on supply and demand (there is no bidding since 2017). AWS can reclaim the instance with a 2-minute warning.
 - **Use Cases**:
   - Applications with flexible start and end times.
   - Compute needs that are feasible only at low prices.
-  - Ideal for single-instance deployments to save costs.
+  - Fault-tolerant, interruptible workloads (e.g., batch jobs, distributed processing); not suited for single-instance deployments that must stay up.
 
 ### Dedicated Hosts
 - **Description**: A physical EC2 server dedicated to your use with physical CPUs and memory. Helps reduce costs by leveraging existing server-bound software licenses (e.g., per-CPU licenses) and supports compliance with regulatory standards.
@@ -585,7 +580,7 @@ To understand costs better, refer to the AWS EC2 Pricing list. Important categor
 - **Free Tier**: Lightweight resources for free experimentation.
 - **On-Demand Instances**: Rent by the hour.
 - **Reserved Instances**: Discounts for longer-term rentals.
-- **Spot Instances**: Bid for unused capacity in an open market.
+- **Spot Instances**: Use spare capacity at a discount; AWS can reclaim it at short notice.
 - **EBS-Optimized Instances**: For high-performance file I/O.
 - **Amazon Elastic Block Store**: Rent storage volumes separately from instances.
 
@@ -607,13 +602,13 @@ In this section, we’ll look closely at the On-Demand instance pricing. For exa
 **Note on Terminology**:
 - **GiB vs. GB**: Memory is reported in GiB and storage in GB (1 GiB ≈ 1.074 GB).
 - **vCPUs and ECUs**: 
-  - **vCPU**: Virtual CPU that represents the number of physical CPUs available.
+  - **vCPU**: Virtual CPU; each vCPU is a hardware thread of a physical CPU core (on Graviton/ARM instances such as t4g, one vCPU is one physical core), not a whole physical CPU.
   - **ECU**: Elastic Compute Unit, which allows for comparisons between machines with different CPU generations.
 
 ### Storage Types
 
 Storage descriptions for EC2 instances include:
-- **EBS only**: Volumes that exist independently of EC2 instances and can be attached to multiple instances.
+- **EBS only**: Volumes that exist independently of EC2 instances; a volume is normally attached to one instance at a time (io1/io2 Multi-Attach is the exception).
 - **SSD**: Solid-state drive, typically higher performance.
 - **HDD**: Hard disk drive, generally less expensive but lower performance.
 
@@ -746,7 +741,7 @@ This step introduces many advanced concepts that will be covered only briefly he
 ### Instance Configuration Options
 Using the **Number of instances** option, you could launch multiple instances of the same AMI with the same hardware configurations at the same time. However, in our example, only one instance will be launched.
 
-- You can attempt to negotiate a cheaper rental by using the **Request Spot Instances** option.
+- You can get a cheaper (but interruptible) rental by using the **Request Spot Instances** option.
 - The **Shutdown behavior** option determines what will happen if you shutdown the instance from within the AMI (e.g., by issuing a `sudo shutdown` command in Linux).
 - To prevent accidental termination of your instance, you may want to set this option to **Stop**.
 - You can also enable **termination protection** to help prevent accidental termination.
@@ -1102,6 +1097,7 @@ Here is a list of more advanced topics for discussion on how to move beyond the 
 - Increase speed and agility
 - Stop spending money running and maintaining data centers
 - Go global in minutes
+- Benefit from massive economies of scale
 
 ---
 
@@ -1167,7 +1163,7 @@ More here: [AWS Types of Cloud Computing](https://aws.amazon.com/types-of-cloud-
 
 ### What is an Edge Location?
 
-**Answer**: Edge Locations are endpoints for AWS which are used for caching content. There are many more Edge Locations than Regions. Currently, there are over 96 Edge Locations.
+**Answer**: Edge Locations are endpoints for AWS which are used for caching content. There are many more Edge Locations than Regions. Currently, there are 600+ Edge Locations.
 
 ---
 
