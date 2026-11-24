@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 export AWS_PAGER=""
+export AWS_DEFAULT_REGION="eu-west-1"
 set -eu
 
 if [[ -z "${AWS_PROFILE}" ]]

@@ -4,6 +4,10 @@
 
 Amazon Athena is an interactive query service that lets you use standard SQL to analyze data directly in Amazon S3. You can point Athena at your data in Amazon S3, run ad-hoc queries, and get results in seconds. Athena is serverless, so there is no infrastructure to set up or manage. You pay only for the queries you run. Athena scales automatically—executing queries in parallel—so results are fast, even with large datasets and complex queries.
 
+## In-Class Pipeline
+
+The SQL scripts for the in-class exercise are [pipeline/1_create_database.sql](../pipeline/1_create_database.sql), [pipeline/2_raw_edits.sql](../pipeline/2_raw_edits.sql) and [pipeline/3_edits_view.sql](../pipeline/3_edits_view.sql). Replace `<username>` with your username: lowercase letters and digits only (e.g. `johndoe`). The same name is used for your S3 bucket `<username>-wikidata` and your Athena database `<username>`.
+
 ## Athena High Level Overview
 
 - Helps you analyze unstructured, semi-structured, and structured data stored in Amazon S3.
@@ -24,7 +28,7 @@ To get started, log into the Athena console, define your schema using the consol
 
 ## Easy to Query: Just Use Standard SQL
 
-Amazon Athena uses Presto, an open-source, distributed SQL query engine optimized for low latency, ad-hoc analysis of data. This means you can run queries against large datasets in Amazon S3 using ANSI SQL, with full support for large joins, window functions, and arrays. Athena supports a wide variety of data formats such as CSV, JSON, ORC, Avro, or Parquet. You can also connect to Athena from a wide variety of BI tools using Athena's JDBC driver.
+Amazon Athena (engine version 3) uses Trino, an open-source, distributed SQL query engine optimized for low latency, ad-hoc analysis of data. This means you can run queries against large datasets in Amazon S3 using ANSI SQL, with full support for large joins, window functions, and arrays. Athena supports a wide variety of data formats such as CSV, JSON, ORC, Avro, or Parquet. You can also connect to Athena from a wide variety of BI tools using Athena's JDBC driver.
 
 ## Pay Per Query
 

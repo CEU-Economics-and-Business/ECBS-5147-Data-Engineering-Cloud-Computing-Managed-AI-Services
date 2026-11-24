@@ -62,7 +62,7 @@ The current version of IP addresses is IPv4, but we are transitioning to IPv6, w
 ![on a Windows](https://ceu-cloud-class.github.io/static/5850e7a4b3f13346aad25c26ab05dcef/0b533/windowsip.png) 
 
 **Private IP Addresses:**  
-Private IP addresses are formatted as `10.#.#.#`, `192.168.#.#`, or `172.16.#.#`. These addresses require special configurations for external access (i.e. for someone to 'talk' to your computer).  
+Private IP addresses are formatted as `10.#.#.#`, `192.168.#.#`, or `172.16.#.#` – `172.31.#.#` (`172.16.0.0/12`). These addresses require special configurations for external access (i.e. for someone to 'talk' to your computer).  
 Your personal device is not a server; it doesn't need to be accessed directly. Instead, it requests data from servers. For instance, email is stored on servers like Gmail, and your device makes a request to access that email.
 
 ### Advanced Settings
@@ -151,6 +151,7 @@ Traceroute is a program that sends packets to each router on a path to a destina
 
 - **Mac (Terminal)**: `traceroute domainname.com`
 - **Windows**: `C:\>tracert www.example.com`
+- **Linux / Codespaces**: `traceroute domainname.com` (if `traceroute` or `nslookup` is missing, install them with `sudo apt-get install -y traceroute dnsutils`)
 
 ### Example Traceroute Results
 
@@ -186,15 +187,15 @@ We can use the `nslookup` command to check the IP address of a web domain, for e
 ```bash
 nslookup www.facebook.com
 ```
-We can also simulate a browser request to see the response when visiting a webpage using:
+We can also simulate a browser request to see the response when visiting a webpage using (replace the IP with the one `nslookup` returned for you):
 
 ```
-curl -I http://31.13.65.36/
+curl -I http://<IP-from-nslookup>/
 ```
 
-This tells us that Facebook would prefer we use their domain name, which specifies which type of HTTP to use.
+Facebook answers with a `301` (redirect) status and a `Location` header: this tells us that Facebook would prefer we use their domain name, which specifies which type of HTTP to use.
 
-If successful, the response will return 200, indicating that everything is okay. Conversely, a 404 response indicates that something didn't go as planned. The information we receive is referred to as headers, which provide additional data about the response.
+In general, a successful response returns 200, indicating that everything is okay. Conversely, a 404 response indicates that something didn't go as planned. The information we receive is referred to as headers, which provide additional data about the response.
 
 ## HTML - Hypertext Markup Language
 
@@ -309,7 +310,7 @@ When Bob wants to reply to Alice, he uses Alice's public key. Alice then decrypt
 
 ### Browser Implementation
 
-All of this occurs automatically in today's browsers. When your browser (like Chrome or Edge) connects to websites such as amazon.com or gmail.com, it uses its own public and private keys, as do the servers of those websites. 
+All of this occurs automatically in today's browsers. When your browser (like Chrome or Edge) connects to websites such as amazon.com or gmail.com, the server presents its certificate (containing the server's public key, signed by a trusted certificate authority), and the browser and server then agree on a fresh shared secret using an ephemeral (EC)DHE key exchange. In normal TLS the browser does not need its own public and private keys. 
 
 Your browser employs this public key cryptography system to securely exchange messages with companies like Amazon, Google, or Facebook, even though your device has never met anyone from those organizations.
 

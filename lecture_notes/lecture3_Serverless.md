@@ -24,9 +24,9 @@ There are several popular methods for scraping data from the web:
 Using the **`requests`** and **`BeautifulSoup`** libraries in Python, we can scrape data from websites.
 
 ### Package Installation
-Make sure to install the necessary packages:
+`requests` and `beautifulsoup4` are already part of the course environment. All dependencies are preinstalled in Codespaces. Locally, run `uv sync` in the repo root to install everything:
 ```bash
-pip install requests beautifulsoup4
+uv sync
 ```
 
 ### Selector Gadget
@@ -52,7 +52,7 @@ headers = {
 }
 
 # URL to scrape
-url = "https://ceu.edu/article/2024-12-03/combining-data-science-society-thanika-haltrich-presidential-scholar-award"
+url = "https://www.ceu.edu/news/2025-11/cultivating-mindsets-and-practices-environmental-sustainability"
 
 # Fetch the webpage
 response = requests.get(url, headers=headers)
@@ -66,8 +66,8 @@ if response.status_code == 200:
     print("Page Title:")
     print(title)
 
-    # Extract paragraphs using CSS selector
-    description_html = webpage.select("#block-system-main p")
+    # Extract the article body using CSS selector
+    description_html = webpage.select(".col-lg-8")
     texts = [text.get_text().strip() for text in description_html]
     text = "\n".join(texts)
     print("\nArticle Content:")
@@ -103,24 +103,19 @@ Amazon Polly is a cloud service that transforms text into lifelike speech, enhan
 - Internet of Things (IoT) applications
 
 ### Installation
-To install the Amazon Polly SDK for Python (boto3):
+The AWS SDK for Python (boto3) is already part of the course environment. All dependencies are preinstalled in Codespaces. Locally, run `uv sync` in the repo root to install everything:
 ```bash
-pip install boto3
+uv sync
 ```
 
 ### Setting Up Credentials
-You can set AWS credentials using environment variables or AWS CLI configuration:
+Set up your AWS credentials with the AWS CLI (use `eu-west-1` as the default region):
 ```bash
 aws configure
 ```
+This stores your keys in `~/.aws/credentials`, where boto3 picks them up automatically.
 
-Or set them directly in Python:
-```python
-import os
-os.environ["AWS_ACCESS_KEY_ID"] = "your_access_key"
-os.environ["AWS_SECRET_ACCESS_KEY"] = "your_secret_key"
-os.environ["AWS_DEFAULT_REGION"] = "us-east-1"
-```
+> **Warning**: Never put your access keys in code or notebooks, and never commit them to Git.
 
 ### Using Polly
 To synthesize speech using Polly:
@@ -129,7 +124,7 @@ import boto3
 from io import BytesIO
 
 # Create Polly client
-polly = boto3.client('polly', region_name='us-east-1')
+polly = boto3.client('polly', region_name='eu-west-1')
 
 # Synthesize speech
 text = "Forget that! There are places in this world that aren't made out of stone..."
@@ -157,12 +152,12 @@ Amazon Comprehend is a natural language processing (NLP) service that analyzes d
 
 Amazon Comprehend can examine and analyze documents in these languages: English, Spanish, French, German, Italian, Portuguese.
 
-To install and use Comprehend with Python:
+To use Comprehend with Python you need boto3. All dependencies are preinstalled in Codespaces. Locally, run `uv sync` in the repo root to install everything:
 ```bash
-pip install boto3
+uv sync
 ```
 
-Set up your AWS credentials using environment variables or AWS CLI configuration.
+Set up your AWS credentials with `aws configure` (see above).
 
 ```python
 import boto3
@@ -211,18 +206,16 @@ for text in texts:
 
 [Documentation](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/s3.html)
 
-To install boto3 for S3 access:
+S3 access uses boto3. All dependencies are preinstalled in Codespaces. Locally, run `uv sync` in the repo root to install everything:
 ```bash
-pip install boto3
+uv sync
 ```
 
-Set credentials using environment variables or AWS CLI:
-```python
-import os
-os.environ["AWS_ACCESS_KEY_ID"] = "your_access_key"
-os.environ["AWS_SECRET_ACCESS_KEY"] = "your_secret_key"
-os.environ["AWS_DEFAULT_REGION"] = "eu-west-1"
+Set credentials with the AWS CLI (keys end up in `~/.aws/credentials`):
+```bash
+aws configure
 ```
+> **Warning**: Never put your access keys in code or notebooks, and never commit them to Git.
 The package can be used to examine publicly accessible S3 buckets and publicly accessible S3 objects without registering an AWS account. If credentials have been generated in the AWS console and made available, you can find your available buckets using:
 
 ```python
@@ -304,8 +297,9 @@ Amazon Translate is a neural machine translation service that delivers fast, hig
 
 **Install**
 
+All dependencies are preinstalled in Codespaces. Locally, run `uv sync` in the repo root to install everything:
 ```bash
-pip install boto3
+uv sync
 ```
 
 **Example**
@@ -314,7 +308,7 @@ pip install boto3
 import boto3
 
 # Create Translate client
-translate = boto3.client('translate', region_name='us-east-1')
+translate = boto3.client('translate', region_name='eu-west-1')
 
 # Translate some text from French to English
 response = translate.translate_text(
@@ -348,8 +342,8 @@ Amazon Rekognition is based on the same proven, highly scalable deep learning te
 ```python
 import boto3
 
-BUCKET = "amazon-rekognition"
-KEY = "test.jpg"
+BUCKET = "de2-datasets"
+KEY = "soros.jpg"
 
 def detect_labels(bucket, key, max_labels=10, min_confidence=90, region="eu-west-1"):
     rekognition = boto3.client("rekognition", region)
@@ -384,8 +378,8 @@ Suit - 96.7797698975%
 ```python
 import boto3
 
-BUCKET = "amazon-rekognition"
-KEY = "test.jpg"
+BUCKET = "de2-datasets"
+KEY = "soros.jpg"
 FEATURES_BLACKLIST = ("Landmarks", "Emotions", "Pose", "Quality", "BoundingBox", "Confidence")
 
 def detect_faces(bucket, key, attributes=['ALL'], region="eu-west-1"):
@@ -411,7 +405,8 @@ for face in detect_faces(BUCKET, KEY):
         print("  {quality} : {value}".format(quality=quality, value=value))
     # facial features
     for feature, data in face.items():
-        if feature not in FEATURES_BLACKLIST:
+        # skip features without a "Value" (e.g. AgeRange, EyeDirection)
+        if feature not in FEATURES_BLACKLIST and isinstance(data, dict) and "Value" in data:
             print("  {feature}({data[Value]}) : {data[Confidence]}%".format(feature=feature, data=data))
 ```
 

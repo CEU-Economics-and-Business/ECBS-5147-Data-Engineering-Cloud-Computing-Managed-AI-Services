@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 export AWS_PAGER=""
-export AWS_PROFILE=de2
+export AWS_DEFAULT_REGION="eu-west-1"
+export AWS_PROFILE=ceu
 
 set -eu
 

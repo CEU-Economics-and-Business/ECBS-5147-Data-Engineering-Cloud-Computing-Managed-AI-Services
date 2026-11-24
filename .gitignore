@@ -26,3 +26,10 @@ encrypted_message.bin
 # Solution files for views assignment (kept local only)
 pipeline/solutions/*
 !pipeline/solutions/extract_edits_solution.ipynb
+
+# Homework solutions and grading (kept local only)
+homework/*
+!homework/check_submission.py
+
+# Student repo list (personal data, kept local only)
+repos.txt

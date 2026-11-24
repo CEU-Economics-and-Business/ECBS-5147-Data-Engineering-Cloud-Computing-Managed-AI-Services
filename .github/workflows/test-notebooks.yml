@@ -11,7 +11,7 @@ on:
 
 jobs:
   test:
-    if: github.repository == 'CEU-Economics-and-Business/ECBS-5147-Data-Engineering-2-Cloud-Computing'
+    if: github.repository == 'CEU-Economics-and-Business/ECBS-5147-Data-Engineering-Cloud-Computing-Managed-AI-Services'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/zoltanctoth/ceu-cloud-class:latest
@@ -22,20 +22,12 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Generate RSA keypair for tests
-        run: |
-          python -c "
-          from Crypto.PublicKey import RSA
-          key = RSA.generate(2048)
-          with open('my_keypair', 'wb') as f:
-              f.write(key.export_key())
-          with open('my_keypair.pub', 'wb') as f:
-              f.write(key.publickey().export_key())
-          print('Generated RSA keypair for testing')
-          "
+        # Same command students run (encryption/create_public_key.md)
+        run: ssh-keygen -t rsa -f my_keypair -N ''
 
       - name: Run pytest
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-        run: pytest tests/test_notebooks.py -v
+        run: uv run --frozen pytest tests/test_notebooks.py -v

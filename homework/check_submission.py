@@ -32,11 +32,8 @@ except ImportError:
     print("ERROR: boto3 is not installed")
     print("=" * 66)
     print()
-    print("Please install boto3 by running:")
-    print("    pip install boto3")
-    print()
-    print("Or if you're using uv:")
-    print("    uv pip install boto3")
+    print("Run the script with uv, which installs boto3 for you:")
+    print("    uv run homework/check_submission.py <your-username>")
     sys.exit(1)
 
 
@@ -752,7 +749,7 @@ def verify_athena_query(session: boto3.Session, username: str):
     output_location = f"s3://{bucket_name}/athena-results/"
 
     query = f"SELECT * FROM {database_name}.views LIMIT 10"
-    result = run_athena_query(session, username, query, output_location)
+    result = run_athena_query(session, database_name, query, output_location)
 
     if result is None:
         fail_mark("Athena query returned no result")

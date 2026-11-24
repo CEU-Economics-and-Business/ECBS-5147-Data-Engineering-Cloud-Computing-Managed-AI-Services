@@ -8,6 +8,7 @@
 #   ./apply_policies.sh policies/Foo.json  # Apply a single policy
 #
 export AWS_PAGER=""
+export AWS_DEFAULT_REGION="eu-west-1"
 set -eu
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -99,5 +100,18 @@ else
         fi
     done
 fi
+
+# Attach AWS managed ReadOnlyAccess policy
+READONLY_ARN="arn:aws:iam::aws:policy/ReadOnlyAccess"
+echo "Processing: AWS managed ReadOnlyAccess"
+if aws iam list-attached-group-policies --group-name "$GROUP_NAME" \
+    --query "AttachedPolicies[?PolicyArn=='$READONLY_ARN']" --output text | grep -q "ReadOnlyAccess"; then
+    echo "  Already attached to $GROUP_NAME"
+else
+    echo "  Attaching to $GROUP_NAME..."
+    aws iam attach-group-policy --group-name "$GROUP_NAME" --policy-arn "$READONLY_ARN"
+    echo "  Attached"
+fi
+echo ""
 
 echo "=== Done ==="

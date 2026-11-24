@@ -273,9 +273,39 @@
             "Resource": "arn:aws:ec2:*:*:instance/*",
             "Condition": {
                 "StringNotLikeIfExists": {
-                    "ec2:InstanceType": ["t4g.nano"]
+                    "ec2:InstanceType": [
+                        "t4g.micro"
+                    ]
                 }
             }
+        },
+        {
+            "Sid": "ProtectClassAMI",
+            "Effect": "Deny",
+            "Action": [
+                "ec2:DeregisterImage",
+                "ec2:DisableImage",
+                "ec2:ModifyImageAttribute",
+                "ec2:ResetImageAttribute",
+                "ec2:DisableImageDeregistrationProtection",
+                "ec2:CreateTags",
+                "ec2:DeleteTags"
+            ],
+            "Resource": "arn:aws:ec2:*::image/*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/ceu-class-ami": "true"
+                }
+            }
+        },
+        {
+            "Sid": "ProtectAdminRoles",
+            "Effect": "Deny",
+            "Action": "iam:*",
+            "Resource": [
+                "arn:aws:iam::870137400553:role/ceu-admin/*",
+                "arn:aws:iam::870137400553:instance-profile/ceu-admin/*"
+            ]
         },
         {
             "Sid": "BedrockInvokeModels",
@@ -287,7 +317,10 @@
             "Resource": [
                 "arn:aws:bedrock:*:870137400553:inference-profile/eu.amazon.nova-micro-v1:0",
                 "arn:aws:bedrock:*::foundation-model/amazon.nova-micro-v1:0",
-                "arn:aws:bedrock:*::foundation-model/mistral.mistral-7b-instruct-v0:2"
+                "arn:aws:bedrock:*:870137400553:inference-profile/eu.amazon.nova-lite-v1:0",
+                "arn:aws:bedrock:*::foundation-model/amazon.nova-lite-v1:0",
+                "arn:aws:bedrock:*::foundation-model/mistral.ministral-3-8b-instruct",
+                "arn:aws:bedrock:*::foundation-model/anthropic.claude-3-haiku-20240307-v1:0"
             ]
         },
         {

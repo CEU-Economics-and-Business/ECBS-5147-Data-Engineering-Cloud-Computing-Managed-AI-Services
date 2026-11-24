@@ -14,9 +14,7 @@ def find_notebooks():
     notebooks = []
 
     # Excluded notebooks
-    excluded_notebooks = {
-        "bedrock-example.ipynb"  # Requires special IAM role assumption
-    }
+    excluded_notebooks = set()
 
     for nb_path in root.rglob("*.ipynb"):
         # Skip notebooks that are execution outputs or in hidden directories

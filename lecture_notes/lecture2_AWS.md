@@ -136,7 +136,6 @@ AWS offers a wide variety of services to support different cloud computing needs
 ### Machine Learning
 - **SageMaker**: Managed notebook environment for building ML models.
 - **Comprehend**: Sentiment analysis service.
-- **DeepLens**: Hardware and software for computer vision.
 - **Lex**: Chatbot engine powering Alexa.
 - **Polly**: Text-to-speech with realistic voices.
 - **Rekognition**: Image processing and recognition.
@@ -153,9 +152,6 @@ AWS offers a wide variety of services to support different cloud computing needs
 
 ### Security, Identity, and Compliance
 - **IAM (Identity and Access Management)**: Manages user permissions and access.
-
-### AR/VR
-- **Sumerian**: Tools for building 3D, AR, and VR applications.
 
 ### Application Integration
 - **SNS (Simple Notification Service)**: Push notification and messaging service.
@@ -201,11 +197,8 @@ AWS S3’s scalable and flexible nature makes it ideal for storing static assets
 ## Data Consistency for S3
 
 ### Consistency Models in S3
-- **Read-After-Write Consistency for PUTS of New Objects**: 
-  When a new object is uploaded to S3, you can read it immediately after uploading—this is known as “read-after-write” consistency. For example, when you use a `PUT` request to add a file, it’s immediately accessible.
-
-- **Eventual Consistency for Overwrite PUTS and DELETES**: 
-  For updates or deletions of existing objects, S3 follows an eventual consistency model. This means that if you modify or delete an object and attempt to read it right away, you might still get the previous version until changes propagate fully across the S3 system.
+- **Strong Read-After-Write Consistency**: 
+  Since December 2020, S3 provides strong read-after-write consistency for all `PUT`, `DELETE` and `LIST` operations. When you upload a new object, overwrite an existing one, or delete one, any subsequent read (or listing) immediately reflects the change—you will never get a stale version.
 
 ### S3 Guarantees
 - **Availability**: S3 is built for **99.99% availability**.
@@ -303,14 +296,13 @@ EC2 has fundamentally changed cloud computing by enabling businesses to access a
 - **Types**:
   - **Standard RIs**: Up to 75% savings compared to On-Demand.
   - **Convertible RIs**: Up to 54% savings, with flexibility to modify instance attributes to equal or greater value.
-  - **Scheduled RIs**: Reserved for specific time windows, allowing you to match capacity with predictable schedules (e.g., part of a day, week, or month).
 
 ### Spot Instances
-- **Pricing**: Bid your own price for instance capacity, allowing for cost-effective options for flexible workloads.
+- **Pricing**: Use spare EC2 capacity at a steep discount (up to 90%) at the current Spot price, which AWS adjusts gradually based on supply and demand (there is no bidding since 2017). AWS can reclaim the instance with a 2-minute warning.
 - **Use Cases**:
   - Applications with flexible start and end times.
   - Compute needs that are feasible only at low prices.
-  - Ideal for single-instance deployments to save costs.
+  - Fault-tolerant, interruptible workloads (e.g., batch jobs, distributed processing); not suited for single-instance deployments that must stay up.
 
 ### Dedicated Hosts
 - **Description**: A physical EC2 server dedicated to your use with physical CPUs and memory. Helps reduce costs by leveraging existing server-bound software licenses (e.g., per-CPU licenses) and supports compliance with regulatory standards.
@@ -368,17 +360,23 @@ Amazon **EBS (Elastic Block Storage)** provides persistent block storage for EC2
 
 Amazon EBS offers a variety of volume types to suit different performance and cost needs. Here’s a breakdown of each:
 
+### General Purpose SSD (GP3)
+- **Use Case**: The current default volume type; balances price and performance for a wide range of workloads.
+- **Performance**:
+  - Provides a baseline of 3,000 IOPS and 125 MB/s regardless of volume size.
+  - IOPS and throughput can be provisioned independently of size, up to 16,000 IOPS.
+
 ### General Purpose SSD (GP2)
-- **Use Case**: Balances price and performance for a wide range of workloads.
+- **Use Case**: Previous-generation general purpose volume; balances price and performance for a wide range of workloads.
 - **Performance**:
   - Provides a baseline of 3 IOPS per GB.
-  - Supports up to 10,000 IOPS and can burst up to 3,000 IOPS for extended periods on volumes at 3,334 GB or larger.
+  - Supports up to 16,000 IOPS; volumes smaller than 1 TiB can burst up to 3,000 IOPS.
 
 ### Provisioned IOPS SSD (IO1)
 - **Use Case**: Ideal for I/O-intensive applications like large relational and NoSQL databases.
 - **Performance**:
-  - Designed for scenarios requiring more than 10,000 IOPS.
-  - Capable of providing up to 20,000 IOPS per volume.
+  - Designed for scenarios requiring more than 16,000 IOPS.
+  - Capable of providing up to 64,000 IOPS per volume.
   - Offers high-performance, low-latency storage.
 
 ### Throughput Optimized HDD (ST1)
@@ -476,7 +474,7 @@ Before launching and using an EC2 instance, ensure that you create a Security Gr
 
 1. Go to **Services** > **EC2** > **Key Pairs**.
 
-2. Add your **public** key.
+2. Click **Create key pair**, name it **CEU-Tutorial**, and download the `.pem` private key file (see the Key pair section below).
 
 ### Step 2: Create a Security Group
 
@@ -582,7 +580,7 @@ To understand costs better, refer to the AWS EC2 Pricing list. Important categor
 - **Free Tier**: Lightweight resources for free experimentation.
 - **On-Demand Instances**: Rent by the hour.
 - **Reserved Instances**: Discounts for longer-term rentals.
-- **Spot Instances**: Bid for unused capacity in an open market.
+- **Spot Instances**: Use spare capacity at a discount; AWS can reclaim it at short notice.
 - **EBS-Optimized Instances**: For high-performance file I/O.
 - **Amazon Elastic Block Store**: Rent storage volumes separately from instances.
 
@@ -604,13 +602,13 @@ In this section, we’ll look closely at the On-Demand instance pricing. For exa
 **Note on Terminology**:
 - **GiB vs. GB**: Memory is reported in GiB and storage in GB (1 GiB ≈ 1.074 GB).
 - **vCPUs and ECUs**: 
-  - **vCPU**: Virtual CPU that represents the number of physical CPUs available.
+  - **vCPU**: Virtual CPU; each vCPU is a hardware thread of a physical CPU core (on Graviton/ARM instances such as t4g, one vCPU is one physical core), not a whole physical CPU.
   - **ECU**: Elastic Compute Unit, which allows for comparisons between machines with different CPU generations.
 
 ### Storage Types
 
 Storage descriptions for EC2 instances include:
-- **EBS only**: Volumes that exist independently of EC2 instances and can be attached to multiple instances.
+- **EBS only**: Volumes that exist independently of EC2 instances; a volume is normally attached to one instance at a time (io1/io2 Multi-Attach is the exception).
 - **SSD**: Solid-state drive, typically higher performance.
 - **HDD**: Hard disk drive, generally less expensive but lower performance.
 
@@ -627,7 +625,7 @@ AWS provides an accounting of usage and costs on a **30-day cycle**. You can acc
 Amazon describes the billing process as follows:
 - You pay **only for what you use**, with **no minimum fee**.
 - Pricing is calculated per **instance-hour** consumed for each instance type.
-- **Partial instance-hours** are billed as full hours.
+- Linux instances are billed **per second**, with a **60-second minimum**.
 - There is **no Data Transfer charge** between two Amazon Web Services within the same region.
 - Data transferred between AWS services in different regions is charged as **Internet Data Transfer** on both sides of the transfer.
 - Usage for other AWS services is billed separately from Amazon EC2.
@@ -646,7 +644,7 @@ Although it sounds straightforward, AWS billing can become complex:
 ### Cost Calculation
 
 The total cost for an EC2 instance is calculated as follows:
-- **Hourly Rate** from the pricing list × **Number of Hours** the instance was running (rounded up to the closest whole hour).
+- **Hourly Rate** from the pricing list × **Time** the instance was running (billed per second for Linux, with a 60-second minimum).
 
 In the **Billing and Cost Management** section of the EC2 console, you can set up billing alerts to notify you of ongoing costs.
 
@@ -686,7 +684,9 @@ In this example, we will launch an instance in **EU West (Ireland)**. Make sure 
 
 Please make sure to select **EU West (Ireland)**.
 
-## Step 1: Choosing an AMI
+The **Launch Instance** page is a single form with these sections: **Name and tags**, **Application and OS Images**, **Instance type**, **Key pair (login)**, **Network settings**, **Configure storage** and **Advanced details**, followed by the **Launch instance** button in the **Summary** panel. The steps below walk through these sections (the screenshots are from the older multi-page wizard, but the settings are the same).
+
+## Step 1: Choosing an AMI (Application and OS Images)
 
 An **AMI** (Amazon Machine Image) is a template for launching an instance. 
 
@@ -709,61 +709,62 @@ For this tutorial, we will select an AMI from the **My AMIs** list:
 
 The root volume of the operating system will be installed on an EBS volume, which means information stored will persist if we stop the instance. 
 
-Once you are ready to proceed, press the **Select** button.
+Once you have selected the AMI, continue with the **Instance type** section.
 
 ![Step 1: Choose an Amazon Machine Image (AMI)](https://ceu-cloud-class.github.io/static/91f73005cf7257c893a370523bd86e12/1e496/AMI-aws.png)
 
 ---
 
-## Step 2: Choosing an Instance Type
+## Step 2: Choosing an Instance Type (Instance type)
 
 Once an AMI is selected, the next step is to choose an instance type. 
 
 In simple terms, we decided on the operating system we want to run, and now we need to choose the hardware that it will run on.
 
 ### Instance Type Selection
-In the example, we have selected **General purpose** in the dropdown filter and picked **t2.nano** Instance Type. Note that the price per hour for each of these options is not listed here. To get the price, note the instance type name (e.g., t2.nano) and refer back to the EC2 pricing list.
+For this class, pick the **t4g.micro** Instance Type (an ARM/Graviton instance matching the arm64 class AMI); it is the only instance type allowed in the class account. To get the price, note the instance type name (e.g., t4g.micro) and refer back to the EC2 pricing list.
 
-We are given a series of options that differ in their number of CPUs, memory, pre-configured storage, and network performance. You can adjust this table using the **Show/Hide Columns** option.
+We are given a series of options that differ in their number of CPUs, memory, pre-configured storage, and network performance. You can compare them using the **Compare instance types** link.
 
-Once you are ready, proceed to the next step by pressing the **Next: Configure Instance Details** button.
+Once you are ready, continue with the remaining sections of the form.
 
 ![Step 2: Choose an Instance Type](https://ceu-cloud-class.github.io/static/cded756d12d31b27c7b3267f958c590f/38116/ec2nano.png)
 
 ---
 
-## Step 3: Configuring Instance Details
+## Step 3: Configuring Instance Details (Advanced details)
 
-Once an instance type is selected, the next step is to configure the instance details. 
+The instance details are configured in the **Advanced details** section at the bottom of the form, and the number of instances in the **Summary** panel. 
 
 This step introduces many advanced concepts that will be covered only briefly here. For the most part, leaving all of these options at their default value will be fine.
 
 ### Instance Configuration Options
 Using the **Number of instances** option, you could launch multiple instances of the same AMI with the same hardware configurations at the same time. However, in our example, only one instance will be launched.
 
-- You can attempt to negotiate a cheaper rental by using the **Request Spot Instances** option.
+- You can get a cheaper (but interruptible) rental by using the **Request Spot Instances** option.
 - The **Shutdown behavior** option determines what will happen if you shutdown the instance from within the AMI (e.g., by issuing a `sudo shutdown` command in Linux).
 - To prevent accidental termination of your instance, you may want to set this option to **Stop**.
 - You can also enable **termination protection** to help prevent accidental termination.
 
 These options can be adjusted later for any instance in the console.
 
-Once you are ready, proceed to the next step by pressing the **Next: Add Storage** button.
+Once you are ready, continue with the **Configure storage** section.
 
 ![Step 3: Configure Instance Details](https://ceu-cloud-class.github.io/static/4fb38bbefc39cdeaaa7ea1cc813180c5/63908/AWS-EC2-ConfigureInstanceDetails.png)
 
 ---
 
-## Step 4: Adding Storage
+## Step 4: Adding Storage (Configure storage)
 
-The next step is to configure the disk/storage that will be available in the instance.
+The **Configure storage** section sets up the disk/storage that will be available in the instance.
 
-The starting point of this page depends on the instance type selected in Step 2. Remember that we selected an instance type with an EBS root volume during AMI selection. 
+The starting point of this section depends on the instance type selected in Step 2. Remember that we selected an instance type with an EBS root volume during AMI selection. 
 
 ### Storage Configuration
 The first volume is **8 GiB**. This is the root volume where the operating system will exist. It is set to be deleted on termination of the instance, but you could choose to keep it as well. 
 
-- Choose **EBS** as the Type, set the device to `/dev/sdc`, give it a size of **500 GiB**, and set the volume type to **General Purpose (SSD)**.
+- Click **Add new volume**, choose **EBS** as the Type, set the device to `/dev/sdc`, give it a size of **8 GiB**, and set the volume type to **gp3**.
+- Remember to delete this extra volume after class: EBS volumes can outlive the instance and keep being billed.
 
 Now, when we log into the instance, we will expect to find two distinct storage volumes/devices.
 
@@ -784,26 +785,26 @@ Once you launch the AMI, you cannot change the Root device type. The **Instance 
 
 For beginners, we recommend using EBS for the root device type. 
 
-Once you are ready, proceed to the next step by pressing the **Next: Tag Instance** button.
+Once you are ready, continue with the tags in the **Name and tags** section at the top of the form.
 
 ![Step 4a: Add Storage](https://ceu-cloud-class.github.io/static/b867080c4ace54155563cd51b21c67f7/84bc0/S3StorageRevised.png)
 
 ![This is how you add additional storage](https://ceu-cloud-class.github.io/static/4bffb08c6b05028dbbf51fa7858187dd/900ee/AWS-EC2-AddStorage2.png)
 ---
 
-## Step 5: Tagging the Instance
+## Step 5: Tagging the Instance (Name and tags)
 
 As you start to have a large number of instances running or saved, you may want to start assigning Tags to help track their usage and billing details. 
 
-Try creating a Tag as a simple key/value pair. 
+Try creating a Tag as a simple key/value pair (the **Name** field is itself a tag with the key `Name`; use **Add additional tags** for more). 
 
-Once you are ready, proceed to the next step by pressing the **Next: Configure Security Group** button.
+Once you are ready, continue with the **Network settings** section.
 
 ![Step 5: Tag Instance](https://ceu-cloud-class.github.io/static/4ac8c99ed1b9bc3b51097de1c8f70ee7/913a1/ec2-tags.png)
 
 ---
 
-## Step 6: Configuring a Security Group
+## Step 6: Configuring a Security Group (Network settings)
 
 A **Security Group** controls how services and users can access your instance once it is running. 
 
@@ -818,7 +819,7 @@ For example, create a Security Group called **CEU-Tutorial** that only allows in
 
 You can restrict access to certain IP addresses for enhanced security.
 
-Once you are ready, proceed to the next step by pressing the **Review and Launch** button.
+Once you are ready, review the **Summary** panel.
 
 ![Step 6: Configure Security Group](https://ceu-cloud-class.github.io/static/e25fd5190ac9a8ae8e7898c7a11ff76c/6578c/Security-Group-AWS.png)
 
@@ -826,49 +827,29 @@ Once you are ready, proceed to the next step by pressing the **Review and Launch
 
 ## Step 7: Reviewing the Instance before Launch
 
-At this stage, you will be presented with a final summary describing the configuration of your instance. Some warnings may appear, especially if you have allowed broad incoming access.
+The **Summary** panel on the right of the form describes the configuration of your instance. Some warnings may appear, especially if you have allowed broad incoming access.
 
-Once you are ready, proceed to the next step by pressing the **Launch** button.
+Make sure a key pair is selected in the **Key pair (login)** section (Step 8), then press the **Launch instance** button.
 
 ![Step 7: Review Instance Launch](https://ceu-cloud-class.github.io/static/3b8992582517b2c61bff9e5c25f4257b/ce0a7/Review-AWS.png)
 
 ---
 
-## Step 8: Assigning a Key Pair
+## Step 8: Assigning a Key Pair (Key pair (login))
 
-You will now be presented with the important configuration step: assigning a **Key Pair**. 
+An important configuration step, done in the **Key pair (login)** section of the form before launching, is assigning a **Key Pair**. 
 
 A Key Pair consists of two keys: a public key stored in AWS and a private key presented to you upon creation, which you must save to log into your instance later.
 
-If this is your first instance, you will have to create a new key pair. 
+If this is your first instance (and you did not create one in Step 1), click **Create new key pair**. 
 
-Once you choose a name (e.g., **AWS-Tutorial**), press the **Download Key Pair** button. This will download a `.pem` file that you need to store securely on your computer.
+Once you choose a name (e.g., **CEU-Tutorial**), press the **Create key pair** button. This will download a `.pem` file that you need to store securely on your computer.
 
 The contents of an RSA key file should look something like this:
 
 ```bash
 -----BEGIN RSA PRIVATE KEY-----
-MIIEpAIBAAKCAQEAhEpF18lIUouMH8qia/BSB70vrQVq/mTTkiRbsACB78rzy3XGRMfvwUseIsGY
-H6SDOAFrRlmTrAArH5A0t2TZ8PKrq7b9FtEAvMCeE7rWEiqBblAWiER0k1pbnIqyKJJCo1YRSUs0
-oNMdvjB4CUylYraSsSNFYJG5gRwcNhBENLDVnDS79geQcPLu/JeEiJ9V+w+CCYAG40f7li/TuULr
-rSy6Oq6jgn2Gy7rrHU7XHU5hcEvxuSeoLb8h/bH1N+cN/H7x3ipEjIDdA2ScCkRXum1V6/kTFQFq
-vDG0lqoTlmTNKgDGpb+rdzJgOg/3QX4RSrX/c0W6aFkV9Ib/jQxT+wIDAQABAoIBADAvWXc6wpQG
-bjiaN0T3mPlmqHnuEkWs9f8yLQ9TcACmvNwr/tbIuISAVu6z8zP7WSxKIAfU0twAh7SMcxclrdh8
-m5kFIvRvlkQqKKnpENY3E0PZ+gsSXB/b9qhzQGdUtt8Fl3BJ61Z07016HA7PEyJ8e7v3q+p7ycTE
-N2Zd0GocRIX8zxdRo9GS8ouS0QcFgNF8KblzlJ6Vs0gI7o7mIRZIm9vWkuR9Lp9uEPD2flUIvN3z
-yRmY/FE/R1yc76Uq+g8eywifRAh+GFyyO8PmFoYRni4Ki6+tEIFaq5JauT0JJF66EZeZP8ZKoWm9
-1K30Ucti2D5l8t+CpbBM5JxhmjECgYEAxz1ET42F1sBGYqNn5hmfjrRp+YF3EYz2awRSibOeerpJ
-Bh1QZeB7/QD3wcB00XFiMu/3haP9xs4eesjSSug+1F59nyzDplNsybz1sYpUQwP9LjX0loUCIb8r
-3O2VdLJ5ZJ9dfNgpStC/wi7kkr8xjK5XiHgP6DLk6+H1Lr2d+kMCgYEAqfpUseZ/sm1vYt80LlWI
-r8ozsUmzuISRspGVUppyDD47Iyj/1mkiWnsFDDl07oBcFIUFIEd1rkJNB3gXKSr76kcY0X4lav7a
-0dvse2T9PC/pLSFkax9UjVnydCN8ElyNoXI2wT5HuLDjjCmHBD/4E9ZOO201JICSbRxaykl17+kC
-gYEAxRiWuxwFiqwq9Okxny856LIRJAIvB+2q17Mu84n8/OvL0YCuSBoKjf6nGcSJy6eevUUmV84i
-/sho3o5Lek7F2NCg9RYTdjaRKAEGDNwK/0Cy9UPq8fwiX7/+ZE+jyg3EiQYeNaKhNqHLEQ3SkFkT
-a1gMv7QGCG5QiAi/w71QyoECgYARcn+VDyrWXsNLK8wIYYE5QhESRpVrADiQUr84DmBcf1rEniW8
-lWgQT4ZSHeexv300If9Hs+4RZ/7OIHaIJEBdaNTUVBV1KRm+5sscU15m+if+GOpc0Id2RuBLKYVH
-wTZMdxPFvCXSgF2q+mxAdGx7ZMj88pW83HGrP3jWQLoZWQKBgQCX5jxy3QXlPpwDppqwKKBQ8cGn
-YDDQHCeD5LhrVCUqo5DCobswzmGKU/xEqYsqlk/Mz1Zkvg4FbJwJDgQGkSyAu071NLi0O6w27dm+
-UHuvF5mCDdAHWirFUBSiebxOpEQnkZ9IPXUUCSC6IQvPFbdGN8G3WjoER6Lw121Q4rJxGA==
+...
 -----END RSA PRIVATE KEY-----
 ```
 
@@ -913,7 +894,7 @@ You should now see the EC2 Console displaying a new instance. This view shows a 
 The EC2 console provides a wealth of information, both in the table and in the detailed description view below. Familiarize yourself with the following key attributes:
 
 - **Name**: The name you've given to your instance.
-- **Instance Type**: The type of instance you have configured (e.g., t2.micro).
+- **Instance Type**: The type of instance you have configured (e.g., t4g.micro).
 - **AMI ID**: The Amazon Machine Image ID used for launching the instance.
 - **Root Device Type**: The type of storage (e.g., EBS).
 - **Block Devices**: The storage volumes associated with your instance.
@@ -987,14 +968,12 @@ To log in to your instance, check this tutorial: [tutorial](https://docs.aws.ama
 If successful, you will see something like this:
 
 ```bash
-       __|  __|_  )
-       _|  (     /   Amazon Linux AMI
-      ___|\___|___|
-
-https://aws.amazon.com/amazon-linux-ami/...
+Welcome to Ubuntu ... (GNU/Linux ... aarch64)
+...
+ubuntu@ip-172-31-...:~$
 ```
 Reflections on the above tutorial
-In this example, we open a terminal command line session on our local computer. We moved to the location of my `.pem` key file. We then made sure the permissions of this file were set correctly using a `chmod` command. You only need to do this step once but there is no harm in doing it again. Then we executed an SSH command to remotely log into our AWS instance using the `Public IP`. Our SSH command included an option to use the `.pem` file to identify us as the owner of the instance. We logged into the instance as a user called `name` as an example now that is a user that we know will be defined by default on all systems.
+In this example, we open a terminal command line session on our local computer. We moved to the location of my `.pem` key file. We then made sure the permissions of this file were set correctly using a `chmod` command. You only need to do this step once but there is no harm in doing it again. Then we executed an SSH command to remotely log into our AWS instance using the `Public IP`. Our SSH command included an option to use the `.pem` file to identify us as the owner of the instance. We logged into the instance as the user `ubuntu`, which is defined by default on Ubuntu AMIs.
 
 Pitfall: One thing to watch out for is the following: the ssh address is based on your IP address and if you start and stop your instance the IP can change, changing the address you ssh into along with it (again, the value in the field Public DNS). If you've re-started your instance and are having trouble sshing, check that your address is correct.
 
@@ -1118,6 +1097,7 @@ Here is a list of more advanced topics for discussion on how to move beyond the 
 - Increase speed and agility
 - Stop spending money running and maintaining data centers
 - Go global in minutes
+- Benefit from massive economies of scale
 
 ---
 
@@ -1183,7 +1163,7 @@ More here: [AWS Types of Cloud Computing](https://aws.amazon.com/types-of-cloud-
 
 ### What is an Edge Location?
 
-**Answer**: Edge Locations are endpoints for AWS which are used for caching content. There are many more Edge Locations than Regions. Currently, there are over 96 Edge Locations.
+**Answer**: Edge Locations are endpoints for AWS which are used for caching content. There are many more Edge Locations than Regions. Currently, there are 600+ Edge Locations.
 
 ---
 
@@ -1223,8 +1203,7 @@ More here: [AWS Types of Cloud Computing](https://aws.amazon.com/types-of-cloud-
 ### What is the data consistency model for S3?
 
 **Answer**:
-- Read after Write consistency for PUTS of new Objects.
-- Eventual Consistency for overwrite PUTS and DELETES (can take some time to propagate).
+- Strong read-after-write consistency for all PUTs (new objects and overwrites), DELETEs and LISTs, since December 2020.
 
 ---
 

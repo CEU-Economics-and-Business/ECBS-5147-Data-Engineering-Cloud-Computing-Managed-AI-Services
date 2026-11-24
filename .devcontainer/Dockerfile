@@ -19,16 +19,7 @@ COPY pyproject.toml /workspace/pyproject.toml
 
 # Install Python dependencies using UV
 WORKDIR /workspace
-RUN uv pip install --system --python /usr/local/bin/python \
-    beautifulsoup4==4.14.2 \
-    black==25.9.0 \
-    boto3==1.40.64 \
-    flake8==7.3.0 \
-    jupyter==1.1.1 \
-    isort==7.0.0 \
-    caesarcipher==1.0 \
-    pycryptodome==3.23.0 \
-    python-dotenv==1.2.1
+RUN uv pip install --system --python /usr/local/bin/python -r pyproject.toml
 
 # Switch to vscode user for development
 USER vscode
