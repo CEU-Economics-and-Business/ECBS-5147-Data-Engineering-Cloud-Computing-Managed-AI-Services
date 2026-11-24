@@ -73,7 +73,7 @@ def parse_s3_url(s3_url: str) -> tuple[str, str] | None:
     return path, ""
 
 
-def delete_all_athena(profile: str = "de2", dry_run: bool = False, keep_default: bool = True) -> None:
+def delete_all_athena(profile: str = "ceu", dry_run: bool = False, keep_default: bool = True) -> None:
     """Delete all Athena databases, tables, and their S3 data."""
     session = boto3.Session(profile_name=profile)
     athena_client = session.client("athena", region_name="eu-west-1")
@@ -136,7 +136,7 @@ def delete_all_athena(profile: str = "de2", dry_run: bool = False, keep_default:
 
 def main():
     parser = argparse.ArgumentParser(description="Delete all Athena databases and tables")
-    parser.add_argument("--profile", default="de2", help="AWS profile to use (default: de2)")
+    parser.add_argument("--profile", default="ceu", help="AWS profile to use (default: ceu)")
     parser.add_argument("--dry-run", action="store_true", help="Show what would be deleted without actually deleting")
     parser.add_argument("--include-default", action="store_true", help="Also delete the default database")
     args = parser.parse_args()

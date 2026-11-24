@@ -7,7 +7,7 @@
 # 2. Removes all students from the "student" group
 #
 # Usage:
-#   AWS_PROFILE=de2 ./end_of_semester.sh [--dry-run]
+#   AWS_PROFILE=ceu ./end_of_semester.sh [--dry-run]
 #
 # Options:
 #   --dry-run    Show what would be deleted without actually deleting
@@ -26,7 +26,7 @@ fi
 
 if [[ -z "${AWS_PROFILE:-}" ]]; then
     echo "ERROR: AWS_PROFILE must be set" >&2
-    echo "Usage: AWS_PROFILE=de2 ./end_of_semester.sh [--dry-run]" >&2
+    echo "Usage: AWS_PROFILE=ceu ./end_of_semester.sh [--dry-run]" >&2
     exit 1
 fi
 
