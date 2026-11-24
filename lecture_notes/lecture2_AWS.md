@@ -201,11 +201,8 @@ AWS S3’s scalable and flexible nature makes it ideal for storing static assets
 ## Data Consistency for S3
 
 ### Consistency Models in S3
-- **Read-After-Write Consistency for PUTS of New Objects**: 
-  When a new object is uploaded to S3, you can read it immediately after uploading—this is known as “read-after-write” consistency. For example, when you use a `PUT` request to add a file, it’s immediately accessible.
-
-- **Eventual Consistency for Overwrite PUTS and DELETES**: 
-  For updates or deletions of existing objects, S3 follows an eventual consistency model. This means that if you modify or delete an object and attempt to read it right away, you might still get the previous version until changes propagate fully across the S3 system.
+- **Strong Read-After-Write Consistency**: 
+  Since December 2020, S3 provides strong read-after-write consistency for all `PUT`, `DELETE` and `LIST` operations. When you upload a new object, overwrite an existing one, or delete one, any subsequent read (or listing) immediately reflects the change—you will never get a stale version.
 
 ### S3 Guarantees
 - **Availability**: S3 is built for **99.99% availability**.
@@ -1223,8 +1220,7 @@ More here: [AWS Types of Cloud Computing](https://aws.amazon.com/types-of-cloud-
 ### What is the data consistency model for S3?
 
 **Answer**:
-- Read after Write consistency for PUTS of new Objects.
-- Eventual Consistency for overwrite PUTS and DELETES (can take some time to propagate).
+- Strong read-after-write consistency for all PUTs (new objects and overwrites), DELETEs and LISTs, since December 2020.
 
 ---
 
