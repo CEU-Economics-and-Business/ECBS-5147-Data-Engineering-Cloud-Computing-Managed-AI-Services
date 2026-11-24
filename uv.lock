@@ -1,5 +1,5 @@
 version = 1
-revision = 3
+revision = 5
 requires-python = "==3.13.*"
 
 [[package]]
@@ -209,12 +209,12 @@ dependencies = [
     { name = "black" },
     { name = "boto3" },
     { name = "caesarcipher" },
-    { name = "click" },
     { name = "flake8" },
     { name = "isort" },
     { name = "jupyter" },
     { name = "pycryptodome" },
     { name = "python-dotenv" },
+    { name = "requests" },
 ]
 
 [package.dev-dependencies]
@@ -229,12 +229,12 @@ requires-dist = [
     { name = "black", specifier = "~=25.9.0" },
     { name = "boto3", specifier = "~=1.40.64" },
     { name = "caesarcipher", specifier = "~=1.0" },
-    { name = "click", specifier = "~=8.3.0" },
     { name = "flake8", specifier = "~=7.3.0" },
     { name = "isort", specifier = "~=7.0.0" },
     { name = "jupyter", specifier = "~=1.1.1" },
     { name = "pycryptodome", specifier = "~=3.23.0" },
     { name = "python-dotenv", specifier = "~=1.2.1" },
+    { name = "requests", specifier = "~=2.32.5" },
 ]
 
 [package.metadata.requires-dev]
