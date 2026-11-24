@@ -722,7 +722,7 @@ Once an AMI is selected, the next step is to choose an instance type.
 In simple terms, we decided on the operating system we want to run, and now we need to choose the hardware that it will run on.
 
 ### Instance Type Selection
-In the example, we have selected **General purpose** in the dropdown filter and picked **t2.nano** Instance Type. Note that the price per hour for each of these options is not listed here. To get the price, note the instance type name (e.g., t2.nano) and refer back to the EC2 pricing list.
+For this class, pick the **t4g.micro** Instance Type (an ARM/Graviton instance matching the arm64 class AMI); it is the only instance type allowed in the class account. To get the price, note the instance type name (e.g., t4g.micro) and refer back to the EC2 pricing list.
 
 We are given a series of options that differ in their number of CPUs, memory, pre-configured storage, and network performance. You can adjust this table using the **Show/Hide Columns** option.
 
@@ -913,7 +913,7 @@ You should now see the EC2 Console displaying a new instance. This view shows a 
 The EC2 console provides a wealth of information, both in the table and in the detailed description view below. Familiarize yourself with the following key attributes:
 
 - **Name**: The name you've given to your instance.
-- **Instance Type**: The type of instance you have configured (e.g., t2.micro).
+- **Instance Type**: The type of instance you have configured (e.g., t4g.micro).
 - **AMI ID**: The Amazon Machine Image ID used for launching the instance.
 - **Root Device Type**: The type of storage (e.g., EBS).
 - **Block Devices**: The storage volumes associated with your instance.
