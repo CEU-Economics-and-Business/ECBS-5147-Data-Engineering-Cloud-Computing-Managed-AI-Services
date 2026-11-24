@@ -760,7 +760,8 @@ The starting point of this page depends on the instance type selected in Step 2.
 ### Storage Configuration
 The first volume is **8 GiB**. This is the root volume where the operating system will exist. It is set to be deleted on termination of the instance, but you could choose to keep it as well. 
 
-- Choose **EBS** as the Type, set the device to `/dev/sdc`, give it a size of **500 GiB**, and set the volume type to **General Purpose (SSD)**.
+- Click **Add new volume**, choose **EBS** as the Type, set the device to `/dev/sdc`, give it a size of **8 GiB**, and set the volume type to **gp3**.
+- Remember to delete this extra volume after class: EBS volumes can outlive the instance and keep being billed.
 
 Now, when we log into the instance, we will expect to find two distinct storage volumes/devices.
 
