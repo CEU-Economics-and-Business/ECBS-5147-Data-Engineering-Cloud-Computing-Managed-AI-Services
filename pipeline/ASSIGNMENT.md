@@ -53,8 +53,8 @@ Look at `2_raw_edits.sql` and `3_edits_view.sql` for reference. Your table colum
 2. Deploy to AWS Lambda
    - **Function name:** `WikiViewsLambda<Username>` (e.g., `WikiViewsLambdaJohndoe`)
    - **Runtime:** Python 3.13
-   - Once you created the function, add the `AWSSDKPandas-Python313` layer (version 5, from AWS layers)
-   - In _Configuration_ -> _Permissions_, edit the _Execution Role_ and attach the `LambdaS3ExecutionRole` role (this is a role with S3 write access)
+   - Once you created the function, add the `AWSSDKPandas-Python313` layer (from AWS layers, latest version)
+   - In _Configuration_ -> _Permissions_, click _Edit_, choose _Use an existing role_ and select `LambdaS3ExecutionRole` (this is a role with S3 write access)
    - In _General Configuration_, set timeout to 30 seconds
 
 3. Test both with `{"date": "2025-11-20"}` and with `{}` (empty event) - this will use the default date (21 days ago)
@@ -89,6 +89,6 @@ Ensure that all assets you submit check all the requirements above:
 6) Lambda function deployed under the function name required and works both with and without passing a date parameter
 7) EventBridge created with the schedule name required
 
-Deadline: 21 Dec 2025, 23:59. Same terms apply as with the previous deadlines
+Deadline: TBD. Same terms apply as with the previous deadlines
 
 Submission URL on Moodle
