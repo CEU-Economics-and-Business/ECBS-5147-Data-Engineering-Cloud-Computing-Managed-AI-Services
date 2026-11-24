@@ -18,7 +18,7 @@ uv sync
 
 Open the notebooks in VS Code and pick the `.venv` kernel (or run `uv run jupyter lab`).
 
-**AWS credentials (both):** run `aws configure` (locally, [install the AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) first), paste your access key ID and secret access key, and set the default region to `eu-west-1`. Never put your keys in code or commit them to Git.
+**AWS credentials (both):** run `aws configure` (locally, `uv run aws configure`; `uv sync` installs the AWS CLI), paste your access key ID and secret access key, and set the default region to `eu-west-1`. Never put your keys in code or commit them to Git.
 
 # **Prerequisites**
 

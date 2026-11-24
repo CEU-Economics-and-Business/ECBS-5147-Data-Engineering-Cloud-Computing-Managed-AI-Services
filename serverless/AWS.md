@@ -1,25 +1,27 @@
-# AWS SDK Set steps
+# AWS SDK Setup steps
+
+## Installation
+In the Codespace everything is preinstalled, you can skip this step.
+
+Locally, run this in the repo root. It installs the AWS CLI (`awscli`), boto3, beautifulsoup4 and all other course dependencies into `.venv`:
+```
+uv sync
+```
 
 ## CLI
-Install the AWS CLI (this has be done for you in the Codespace, no need to execute this script)
-```
-# pip install awscli
-```
-
 Configure the AWS CLI:
 ```
-aws configure
+uv run aws configure
 ```
+(In the Codespace, or with the virtualenv activated via `source .venv/bin/activate`, plain `aws configure` works too.)
+
 Set `eu-west-1` for the default region.
 
 Your credentials will be stored in `~/.aws/credentials`
 
 ## BOTO3 - The AWS Python SDK
 
-Install boto3 and beautifulsoup4 (this has be done for you in the Codespace, no need to execute this script):
-```
-# pip install boto3 beautifulsoup4
-```
+boto3 picks up the credentials from `~/.aws/credentials` automatically, no extra setup needed.
 
 Rekognition examples:
 https://docs.aws.amazon.com/code-library/latest/ug/python_3_rekognition_code_examples.html
