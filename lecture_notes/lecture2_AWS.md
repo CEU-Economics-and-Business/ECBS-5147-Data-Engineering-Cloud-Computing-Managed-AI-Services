@@ -689,7 +689,9 @@ In this example, we will launch an instance in **EU West (Ireland)**. Make sure 
 
 Please make sure to select **EU West (Ireland)**.
 
-## Step 1: Choosing an AMI
+The **Launch Instance** page is a single form with these sections: **Name and tags**, **Application and OS Images**, **Instance type**, **Key pair (login)**, **Network settings**, **Configure storage** and **Advanced details**, followed by the **Launch instance** button in the **Summary** panel. The steps below walk through these sections (the screenshots are from the older multi-page wizard, but the settings are the same).
+
+## Step 1: Choosing an AMI (Application and OS Images)
 
 An **AMI** (Amazon Machine Image) is a template for launching an instance. 
 
@@ -712,13 +714,13 @@ For this tutorial, we will select an AMI from the **My AMIs** list:
 
 The root volume of the operating system will be installed on an EBS volume, which means information stored will persist if we stop the instance. 
 
-Once you are ready to proceed, press the **Select** button.
+Once you have selected the AMI, continue with the **Instance type** section.
 
 ![Step 1: Choose an Amazon Machine Image (AMI)](https://ceu-cloud-class.github.io/static/91f73005cf7257c893a370523bd86e12/1e496/AMI-aws.png)
 
 ---
 
-## Step 2: Choosing an Instance Type
+## Step 2: Choosing an Instance Type (Instance type)
 
 Once an AMI is selected, the next step is to choose an instance type. 
 
@@ -727,17 +729,17 @@ In simple terms, we decided on the operating system we want to run, and now we n
 ### Instance Type Selection
 For this class, pick the **t4g.micro** Instance Type (an ARM/Graviton instance matching the arm64 class AMI); it is the only instance type allowed in the class account. To get the price, note the instance type name (e.g., t4g.micro) and refer back to the EC2 pricing list.
 
-We are given a series of options that differ in their number of CPUs, memory, pre-configured storage, and network performance. You can adjust this table using the **Show/Hide Columns** option.
+We are given a series of options that differ in their number of CPUs, memory, pre-configured storage, and network performance. You can compare them using the **Compare instance types** link.
 
-Once you are ready, proceed to the next step by pressing the **Next: Configure Instance Details** button.
+Once you are ready, continue with the remaining sections of the form.
 
 ![Step 2: Choose an Instance Type](https://ceu-cloud-class.github.io/static/cded756d12d31b27c7b3267f958c590f/38116/ec2nano.png)
 
 ---
 
-## Step 3: Configuring Instance Details
+## Step 3: Configuring Instance Details (Advanced details)
 
-Once an instance type is selected, the next step is to configure the instance details. 
+The instance details are configured in the **Advanced details** section at the bottom of the form, and the number of instances in the **Summary** panel. 
 
 This step introduces many advanced concepts that will be covered only briefly here. For the most part, leaving all of these options at their default value will be fine.
 
@@ -751,17 +753,17 @@ Using the **Number of instances** option, you could launch multiple instances of
 
 These options can be adjusted later for any instance in the console.
 
-Once you are ready, proceed to the next step by pressing the **Next: Add Storage** button.
+Once you are ready, continue with the **Configure storage** section.
 
 ![Step 3: Configure Instance Details](https://ceu-cloud-class.github.io/static/4fb38bbefc39cdeaaa7ea1cc813180c5/63908/AWS-EC2-ConfigureInstanceDetails.png)
 
 ---
 
-## Step 4: Adding Storage
+## Step 4: Adding Storage (Configure storage)
 
-The next step is to configure the disk/storage that will be available in the instance.
+The **Configure storage** section sets up the disk/storage that will be available in the instance.
 
-The starting point of this page depends on the instance type selected in Step 2. Remember that we selected an instance type with an EBS root volume during AMI selection. 
+The starting point of this section depends on the instance type selected in Step 2. Remember that we selected an instance type with an EBS root volume during AMI selection. 
 
 ### Storage Configuration
 The first volume is **8 GiB**. This is the root volume where the operating system will exist. It is set to be deleted on termination of the instance, but you could choose to keep it as well. 
@@ -788,26 +790,26 @@ Once you launch the AMI, you cannot change the Root device type. The **Instance 
 
 For beginners, we recommend using EBS for the root device type. 
 
-Once you are ready, proceed to the next step by pressing the **Next: Tag Instance** button.
+Once you are ready, continue with the tags in the **Name and tags** section at the top of the form.
 
 ![Step 4a: Add Storage](https://ceu-cloud-class.github.io/static/b867080c4ace54155563cd51b21c67f7/84bc0/S3StorageRevised.png)
 
 ![This is how you add additional storage](https://ceu-cloud-class.github.io/static/4bffb08c6b05028dbbf51fa7858187dd/900ee/AWS-EC2-AddStorage2.png)
 ---
 
-## Step 5: Tagging the Instance
+## Step 5: Tagging the Instance (Name and tags)
 
 As you start to have a large number of instances running or saved, you may want to start assigning Tags to help track their usage and billing details. 
 
-Try creating a Tag as a simple key/value pair. 
+Try creating a Tag as a simple key/value pair (the **Name** field is itself a tag with the key `Name`; use **Add additional tags** for more). 
 
-Once you are ready, proceed to the next step by pressing the **Next: Configure Security Group** button.
+Once you are ready, continue with the **Network settings** section.
 
 ![Step 5: Tag Instance](https://ceu-cloud-class.github.io/static/4ac8c99ed1b9bc3b51097de1c8f70ee7/913a1/ec2-tags.png)
 
 ---
 
-## Step 6: Configuring a Security Group
+## Step 6: Configuring a Security Group (Network settings)
 
 A **Security Group** controls how services and users can access your instance once it is running. 
 
@@ -822,7 +824,7 @@ For example, create a Security Group called **CEU-Tutorial** that only allows in
 
 You can restrict access to certain IP addresses for enhanced security.
 
-Once you are ready, proceed to the next step by pressing the **Review and Launch** button.
+Once you are ready, review the **Summary** panel.
 
 ![Step 6: Configure Security Group](https://ceu-cloud-class.github.io/static/e25fd5190ac9a8ae8e7898c7a11ff76c/6578c/Security-Group-AWS.png)
 
@@ -830,17 +832,17 @@ Once you are ready, proceed to the next step by pressing the **Review and Launch
 
 ## Step 7: Reviewing the Instance before Launch
 
-At this stage, you will be presented with a final summary describing the configuration of your instance. Some warnings may appear, especially if you have allowed broad incoming access.
+The **Summary** panel on the right of the form describes the configuration of your instance. Some warnings may appear, especially if you have allowed broad incoming access.
 
-Once you are ready, proceed to the next step by pressing the **Launch** button.
+Make sure a key pair is selected in the **Key pair (login)** section (Step 8), then press the **Launch instance** button.
 
 ![Step 7: Review Instance Launch](https://ceu-cloud-class.github.io/static/3b8992582517b2c61bff9e5c25f4257b/ce0a7/Review-AWS.png)
 
 ---
 
-## Step 8: Assigning a Key Pair
+## Step 8: Assigning a Key Pair (Key pair (login))
 
-You will now be presented with the important configuration step: assigning a **Key Pair**. 
+An important configuration step, done in the **Key pair (login)** section of the form before launching, is assigning a **Key Pair**. 
 
 A Key Pair consists of two keys: a public key stored in AWS and a private key presented to you upon creation, which you must save to log into your instance later.
 
