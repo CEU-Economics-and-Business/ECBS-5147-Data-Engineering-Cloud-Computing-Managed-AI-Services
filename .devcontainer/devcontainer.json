@@ -31,5 +31,4 @@
 		"AWS_DEFAULT_REGION": "eu-west-1"
 	},
 	"postCreateCommand": "bash .devcontainer/setup-container.sh",
-	"postAttachCommand": "bash .devcontainer/setup-terminal.sh",
 }
