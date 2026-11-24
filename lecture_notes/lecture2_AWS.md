@@ -365,17 +365,23 @@ Amazon **EBS (Elastic Block Storage)** provides persistent block storage for EC2
 
 Amazon EBS offers a variety of volume types to suit different performance and cost needs. Here’s a breakdown of each:
 
+### General Purpose SSD (GP3)
+- **Use Case**: The current default volume type; balances price and performance for a wide range of workloads.
+- **Performance**:
+  - Provides a baseline of 3,000 IOPS and 125 MB/s regardless of volume size.
+  - IOPS and throughput can be provisioned independently of size, up to 16,000 IOPS.
+
 ### General Purpose SSD (GP2)
-- **Use Case**: Balances price and performance for a wide range of workloads.
+- **Use Case**: Previous-generation general purpose volume; balances price and performance for a wide range of workloads.
 - **Performance**:
   - Provides a baseline of 3 IOPS per GB.
-  - Supports up to 10,000 IOPS and can burst up to 3,000 IOPS for extended periods on volumes at 3,334 GB or larger.
+  - Supports up to 16,000 IOPS; volumes smaller than 1 TiB can burst up to 3,000 IOPS.
 
 ### Provisioned IOPS SSD (IO1)
 - **Use Case**: Ideal for I/O-intensive applications like large relational and NoSQL databases.
 - **Performance**:
-  - Designed for scenarios requiring more than 10,000 IOPS.
-  - Capable of providing up to 20,000 IOPS per volume.
+  - Designed for scenarios requiring more than 16,000 IOPS.
+  - Capable of providing up to 64,000 IOPS per volume.
   - Offers high-performance, low-latency storage.
 
 ### Throughput Optimized HDD (ST1)
