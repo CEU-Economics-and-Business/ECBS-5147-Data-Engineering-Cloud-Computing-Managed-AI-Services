@@ -624,7 +624,7 @@ AWS provides an accounting of usage and costs on a **30-day cycle**. You can acc
 Amazon describes the billing process as follows:
 - You pay **only for what you use**, with **no minimum fee**.
 - Pricing is calculated per **instance-hour** consumed for each instance type.
-- **Partial instance-hours** are billed as full hours.
+- Linux instances are billed **per second**, with a **60-second minimum**.
 - There is **no Data Transfer charge** between two Amazon Web Services within the same region.
 - Data transferred between AWS services in different regions is charged as **Internet Data Transfer** on both sides of the transfer.
 - Usage for other AWS services is billed separately from Amazon EC2.
@@ -643,7 +643,7 @@ Although it sounds straightforward, AWS billing can become complex:
 ### Cost Calculation
 
 The total cost for an EC2 instance is calculated as follows:
-- **Hourly Rate** from the pricing list × **Number of Hours** the instance was running (rounded up to the closest whole hour).
+- **Hourly Rate** from the pricing list × **Time** the instance was running (billed per second for Linux, with a 60-second minimum).
 
 In the **Billing and Cost Management** section of the EC2 console, you can set up billing alerts to notify you of ongoing costs.
 
